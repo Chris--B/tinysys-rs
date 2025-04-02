@@ -4,40 +4,21 @@
 >
 > Of course, before you ask, it does run DOOM, and with sound and keyboard input! (Lately, it has been running Quake as well.)
 
-This crate exposes the raw C bindings of the [tinysys SDK](https://github.com/ecilasun/tinysys/blob/main/software/SDK/README.md) to Rust. It uses `bindgen` to generate and **check in** the bindings. This means using the crate has no dependencies, but updating it is manual. See the section [Updating the SDK+Bindings](#updating-the-sdkbindings) below for more details.
+This repo exposes raw and idiomatic C bindings of the [tinysys SDK](https://github.com/ecilasun/tinysys/blob/main/software/SDK/README.md) to Rust. For the `sys` crate, we use `bindgen` to generate and **check in** the bindings. This means using the crate has light dependencies, but updating it is manual. See the section [Updating the SDK+Bindings](#updating-the-sdkbindings) below for more details.
 
-This crate does **not** expose idiomatic Rust bindings, nor does it take opinions on how to use anything. This is the `-sys` style, straight C bindings.
-
-### Building the crate
-This crate builds with a single `cargo build`. 
+### Building the crates
+The crate builds with a single `cargo build`. 
 
 We set the default target-triple in `.cargo/config.toml` so it works for `tinysys` out of the box.
 
 ## TODOs
 
-This crate is WIP. Here's a list of TODOs I'm working on in no particular order.
+Here's a list of TODOs I'm working on in no particular order.
 - [ ] Idiomatic Rust traits etc
     - We should provide impls for utiltiy traits like those from `bytemuck` on the raw C types.
     - Due to the Orphan Rule, this crate **must** provide them. Unlike idiomatic wrappers, clients cannot provide these.
 - [ ] Idiomatic Rust wrappers
     - It would be nice to have bindings that are more ergonomic to use
-
-## Code Layout
-The code is layed out like so:
-- `src/include/sdk.h`
-    - Generated header that includes the full SDK
-- `src/sdk.rs`
-    - Generated rust file, made by running bindgen on `include/wrapper.h`
-- `src/include/wrapper.h`
-    - Hand written header that includes `sdk.h`.
-    - May add any additional includes or definitions that may be useful.
-- `src/lib.rs`
-    - Defines the crate library and re-exports symbols from the generated `sdk.rs`.
-    - May add any additional utility macros, functions, traits, etc. that may be useful.
-- `c_sdk/`
-    - artifacts and build scripts from this crate for the SDK.
-- `c_sdk/SDK`
-    - The `SDK` folder verbatim from the [`tinysys` repo](https://github.com/ecilasun/tinysys).
 
 ## Updating the SDK+Bindings
 To update everything, you need to install a RISCV toolchain, update the SDK, and build the C/++ code. The SDK can be updated, built, or bindings regenerated independently of eachother.
@@ -49,9 +30,11 @@ Install the Rust target with rustup:
 rustup target add riscv32imac-unknown-none-elf
 ```
 
-#### Windows, Linux
-TODO. I'm not sure how to install riscv-tools on these platforms yet.
-Initial impressions suggest Windows users should try installing and running riscv-tools from WSL.
+#### Windows
+TODO: I'm not sure how to install riscv-tools on these platforms yet, so in the meantime suggest following Linux under WSL.
+
+### Linux
+TODO: Untested yet, https://github.com/riscv-software-src/homebrew-riscv?tab=readme-ov-file#installation
 
 #### macOS
 Install `riscv-tools` using homebrew, as detailed [here](https://github.com/riscv-software-src/homebrew-riscv?tab=readme-ov-file#installation).
@@ -65,21 +48,23 @@ brew install riscv-tools llvm
 ### Downloading the C SDK
 With that installed, make sure it's findable in the path and run the update script:
 ```sh
-./c_sdk/update_sdk.sh 
+./tinysys-sys/c_sdk/update_sdk.sh 
 ```
-This downloads the latest SDK files from the `tinysys` repo and copies it in into `c_sdk/SDK`.
+This downloads the latest SDK files from the `tinysys` repo and copies it in into `tinysys-sys/c_sdk/SDK`. The old `SDK` is copied to `SDK.old` as a backup.
 
 ### Rebuilding
 To rebuild `libtinysys_sdk.a`, run the following:
 ```sh
-make -C c_sdk build
+make -C tinysys-sys/c_sdk build
 ```
 
 ### Running `bindgen`
 Then run bindgen to update the bindings.
 ```sh
-make -C c_sdk sdk.rs
+make -C tinysys-sys/c_sdk sdk.rs
+cargo fmt
 ```
-This generates `src/include/sdk.h` and `src/sdk.rs` from the previously-downloaded SDK and runs `bindgen`. Currently it pulls riscv headers using `riscv64-unknown-elf-gcc -print-sysroot`.
+This generates `tinysys-sys/src/include/sdk.h` and `tinysys-sys/src/sdk.rs` from the previously-downloaded SDK and runs `bindgen`.
+Currently it pulls riscv headers using `riscv64-unknown-elf-gcc -print-sysroot`. If it is named differently on your platform, you'll have to edit `./tinysys-rs/tinysys-sys/c_sdk/Makefile` locally.
 
-If you're only changing the bindgen options, you do not need to rerun `./c_sdk/update_sdk.sh`.
+If you're only changing the bindgen options, you do not need to rerun `./tinysys-sys/c_sdk/update_sdk.sh`.

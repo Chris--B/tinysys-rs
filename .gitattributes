@@ -1,5 +1,5 @@
 # Configure linguist for Github repo stats
 # See: https://github.com/github-linguist/linguist/blob/main/docs/overrides.md
-src/include/sdk.h linguist-generated=true
-src/sdk.rs        linguist-generated=true
-tinysys_c_sdk/SDK/** linguist-vendored=true
+tinysys-sys/src/include/**  linguist-generated=true
+tinysys-sys/src/sdk.rs      linguist-generated=true
+tinysys-sys/c_sdk/SDK/**    linguist-vendored=true
