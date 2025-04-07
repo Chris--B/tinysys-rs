@@ -1,0 +1,7 @@
+[package]
+name = "tinysys-rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+tinysys-sys = { git = "https://github.com/Chris--B/tinysys-rs.git" }
