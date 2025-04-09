@@ -58,8 +58,10 @@ fn use_native_lib(lib_path: &str, lib_name: &str) {
     )
     .unwrap_or_else(|err| {
         panic!(
-            "Failed to copy native lib (\"{}\") to output directory: {}",
-            lib_filename, err
+            "Failed to copy native lib (\"{}\") to output directory: {err}\n  from: {lib}\n  to:   {out}",
+            lib_filename,
+            lib=format!("{}/{}", lib_path, lib_filename),
+            out=format!("{}/{}", out_path, lib_filename),
         )
     });
 

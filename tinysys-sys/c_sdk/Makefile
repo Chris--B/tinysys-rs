@@ -29,7 +29,7 @@ else
     ifeq ($(UNAME_S),Darwin)
         # Note: We compile everything using LLVM from homebrew to make sure that
         # bindgen agrees on what `uint32_t` is defined as: gcc says ulong, clang/bindgen says uint.
-        CXX:=$(shell brew --prefix llvm)/bin/clang++
+        CXX:=$(shell brew --prefix llvm@19)/bin/clang++
     endif
 endif
 
