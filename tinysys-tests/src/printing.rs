@@ -9,7 +9,7 @@ extern crate riscv;
 
 use tinysys_rs::prelude::*;
 
-fn main() -> ! {
+fn main() {
     println!("Hello 👋");
     print!("(1) Hello");
     print!("(2) World");
@@ -30,13 +30,6 @@ fn main() -> ! {
     let v = alloc::vec![1, 2, 3_i16];
     dbg!(v);
     println!();
-
-    println!("Done");
-    loop {
-        unsafe {
-            sys::E32Sleep(10_000_000);
-        }
-    }
 }
 
 /// The entry point loaded by the system
@@ -59,5 +52,7 @@ pub extern "C" fn _start() -> ! {
         }
     }
 
-    main()
+    main();
+
+    tinysys_rs::exit(0);
 }
