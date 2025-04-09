@@ -274,14 +274,14 @@ SYMBOL TABLE:
 00000000         *UND*	00000000 memcpy
 000002ec g     F .text	000001f4 VPUConsolePrint(EVideoContext*, char const*, int)
 000004e0 g     F .text	00000164 VPUConsoleFillLine(EVideoContext*, char)
-00000644 g     F .text	000001d4 VPUConsoleResolve(EVideoContext*)
-00000818 g     F .text	00000070 VPUConsoleClearLine(EVideoContext*, unsigned short)
-00000888 g     F .text	00000140 VPUPrintString(EVideoContext*, unsigned char, unsigned char, unsigned short, unsigned short, char const*, int)
-000009c8 g     F .text	0000002c VPUClear(EVideoContext*, unsigned int)
-000009f4 g     F .text	00000014 VPUReadVBlankCounter()
-00000a08 g     F .text	00000018 VPUGetScanline()
-00000a20 g     F .text	00000060 VPUSwapPages(EVideoContext*, EVideoSwapContext*)
-00000a80 g     F .text	00000020 VPUWaitVSync()
-00000aa0 g     F .text	00000008 VPUGetKernelGfxContext()
+00000644 g     F .text	000001e4 VPUConsoleResolve(EVideoContext*)
+00000828 g     F .text	00000070 VPUConsoleClearLine(EVideoContext*, unsigned short)
+00000898 g     F .text	00000140 VPUPrintString(EVideoContext*, unsigned char, unsigned char, unsigned short, unsigned short, char const*, int)
+000009d8 g     F .text	0000002c VPUClear(EVideoContext*, unsigned int)
+00000a04 g     F .text	00000014 VPUReadVBlankCounter()
+00000a18 g     F .text	00000018 VPUGetScanline()
+00000a30 g     F .text	00000060 VPUSwapPages(EVideoContext*, EVideoSwapContext*)
+00000a90 g     F .text	00000020 VPUWaitVSync()
+00000ab0 g     F .text	00000008 VPUGetKernelGfxContext()
 
 
