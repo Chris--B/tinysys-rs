@@ -11,10 +11,6 @@ mod sdk;
 #[cfg(target_arch = "riscv32")]
 pub use sdk::*;
 
-#[cfg(feature = "alloc")]
-mod printing;
-// only exports macros
-
 #[cfg(target_arch = "riscv32")]
 mod instructions;
 #[cfg(target_arch = "riscv32")]

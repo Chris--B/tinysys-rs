@@ -60,8 +60,8 @@ fn use_native_lib(lib_path: &str, lib_name: &str) {
         panic!(
             "Failed to copy native lib (\"{}\") to output directory: {err}\n  from: {lib}\n  to:   {out}",
             lib_filename,
-            lib=format!("{}/{}", lib_path, lib_filename),
-            out=format!("{}/{}", out_path, lib_filename),
+            lib=format_args!("{}/{}", lib_path, lib_filename),
+            out=format_args!("{}/{}", out_path, lib_filename),
         )
     });
 

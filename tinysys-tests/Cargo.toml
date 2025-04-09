@@ -1,0 +1,40 @@
+[package]
+name = "tinysys-test-bins"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+# Platform level dependencies
+panic-halt = "1"
+riscv = { version = "0.13", features = ["critical-section-single-hart"] }
+
+# Note: We use this for local tests, so we usually want to use the local path here
+# tinysys-rs = { git = "https://github.com/Chris--B/tinysys-rs.git" }
+tinysys-rs = { path = "../tinysys-rs" }
+
+# The embedded-* ecosystem
+embedded-alloc = "0.6"
+embedded-graphics = "0.8"
+
+micromath = "2" # Recommended if using floats
+
+[[bin]]
+name = "test-printing"
+path = "src/printing.rs"
+test = false
+doctest = false
+bench = false
+
+# Enable full optimizations on debug builds of dependencies.
+[profile.dev.package."*"]
+opt-level = "z"
+
+# Enable minimal optimizations for our debug code, so it's easier to step through.
+[profile.dev]
+opt-level = 1
+
+# Optimize for size with release builds.
+[profile.release]
+opt-level = "z"
+lto = true
+codegen-units = 1
