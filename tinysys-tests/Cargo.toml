@@ -5,12 +5,11 @@ edition = "2024"
 
 [dependencies]
 # Platform level dependencies
-panic-halt = "1"
 riscv = { version = "0.13", features = ["critical-section-single-hart"] }
 
 # Note: We use this for local tests, so we usually want to use the local path here
 # tinysys-rs = { git = "https://github.com/Chris--B/tinysys-rs.git" }
-tinysys-rs = { path = "../tinysys-rs" }
+tinysys-rs = { path = "../tinysys-rs", features = ["panic-handler"] }
 
 # The embedded-* ecosystem
 embedded-alloc = "0.6"
@@ -18,6 +17,13 @@ embedded-graphics = "0.8"
 embedded-io = "0.6"
 
 micromath = "2" # Recommended if using floats
+
+[[bin]]
+name = "test-panic"
+path = "src/panic.rs"
+test = false
+doctest = false
+bench = false
 
 [[bin]]
 name = "test-print"

@@ -35,6 +35,37 @@ pub fn exit(code: u32) -> ! {
     todo!("Exiting with code={code}");
 }
 
+#[cfg(feature = "panic-handler")]
+#[cfg(target_arch = "riscv32")]
+#[panic_handler]
+pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
+    unsafe {
+        // Default palette is VGA, see:
+        //      https://retrocomputing.stackexchange.com/questions/27994/
+        let kgfx = sys::VPUGetKernelGfxContext();
+        sys::VPUSetDefaultPalette(kgfx);
+        sys::VPUConsoleSetColors(kgfx, 13 /*text*/, 0 /*bg*/);
+
+        kprintln!(
+            "!! {app} has crashed!!  oh no !",
+            app = env!("CARGO_PKG_NAME")
+        );
+        kprintln!("                                                                ");
+
+        if let Some(loc) = info.location() {
+            kprintln!("{}:{}:{}: ", loc.file(), loc.line(), loc.column());
+        } else {
+            // We don't have location info so there's nothing we can put here.
+            kprintln!("~somewhere: ");
+        }
+        kprintln!("                                                                ");
+
+        kprintln!("{}", info.message());
+
+        exit(42);
+    }
+}
+
 pub mod prelude {
     pub use crate::dbg;
     pub use crate::{kprint, kprintln};

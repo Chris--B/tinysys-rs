@@ -76,7 +76,10 @@ macro_rules! println {
 pub fn _kprint(args: core::fmt::Arguments) {
     use embedded_io::Write;
 
+    // Write to the system console
     let _ = write!(KernelDebugWriter, "{}", args);
+    // *and* uart!
+    let _ = write!(UartWriter, "{}", args);
 }
 
 #[macro_export]

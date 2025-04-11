@@ -4,37 +4,13 @@
 extern crate alloc;
 extern crate riscv;
 
-use tinysys_rs::prelude::*;
+// Ensure we link against tinysys_rs
+extern crate tinysys_rs;
 
 fn main() {
-    println!("### Hello println!() tests 👋");
-    print!("(1) Hello ");
-    print!("(2) World ");
-    print!("\n");
-
-    let x = 1;
-    let y = 2;
-    dbg!();
-    dbg!(x);
-    println!();
-
-    let (xx, yy) = dbg!((x, y));
-    dbg!(xx);
-    dbg!(yy);
-    println!();
-
-    // Check something that's not Copy
-    let v = alloc::vec![1, 2, 3_i16];
-    let v = dbg!(v);
-    println!();
-
-    kprintln!("### kprintln!() tests");
-    kprint!("(3) Hello ");
-    kprint!("(4) World ");
-    kprint!("\n");
-    kprintln!();
-    kprintln!("v = {v:#?}");
-    kprintln!();
+    // This test makes sure panics behave right. We immediately panic and expect this message to
+    // be visible to whoever ran `test-panic`.
+    todo!("oh no, where'd the test go? 🙈");
 }
 
 /// The entry point loaded by the system

@@ -12,3 +12,4 @@ tinysys-sys = { git = "https://github.com/Chris--B/tinysys-rs.git" }
 [features]
 default = []
 std = []
+panic-handler = []
