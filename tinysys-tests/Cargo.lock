@@ -3,18 +3,6 @@
 version = 4
 
 [[package]]
-name = "app"
-version = "0.1.0"
-dependencies = [
- "embedded-alloc",
- "embedded-graphics",
- "micromath",
- "panic-halt",
- "riscv",
- "tinysys-rs",
-]
-
-[[package]]
 name = "autocfg"
 version = "1.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -96,6 +84,12 @@ name = "embedded-hal"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "361a90feb7004eca4019fb28352a9465666b24f840f5c3cddf0ff13920590b89"
+
+[[package]]
+name = "embedded-io"
+version = "0.6.1"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "edd0f118536f44f5ccd48bcb8b111bdc3de888b58c74639dfb034a357d0f206d"
 
 [[package]]
 name = "float-cmp"
@@ -243,15 +237,27 @@ dependencies = [
 [[package]]
 name = "tinysys-rs"
 version = "0.1.0"
-source = "git+https://github.com/Chris--B/tinysys-rs.git#3364e72f1ed54c1a3fd94c3b366b22b412bf48b1"
 dependencies = [
+ "embedded-io",
  "tinysys-sys",
 ]
 
 [[package]]
 name = "tinysys-sys"
 version = "0.1.0"
-source = "git+https://github.com/Chris--B/tinysys-rs.git#3364e72f1ed54c1a3fd94c3b366b22b412bf48b1"
+
+[[package]]
+name = "tinysys-test-bins"
+version = "0.1.0"
+dependencies = [
+ "embedded-alloc",
+ "embedded-graphics",
+ "embedded-io",
+ "micromath",
+ "panic-halt",
+ "riscv",
+ "tinysys-rs",
+]
 
 [[package]]
 name = "unicode-ident"

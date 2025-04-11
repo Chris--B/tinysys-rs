@@ -1,4 +1,4 @@
-#![cfg_attr(not(test), no_std)]
+#![cfg_attr(all(not(feature = "std"), not(test)), no_std)]
 
 /// Re-export of the sys crate
 pub use tinysys_sys as sys;
@@ -7,6 +7,14 @@ pub use tinysys_sys as sys;
 ///
 /// This is most useful with `printf`-debugging.
 pub mod uart;
+
+/// Utilities for debugging
+///
+/// This includes the kprintln!() macro and friends
+pub mod debug;
+
+/// Macro utilities
+pub mod macros;
 
 #[cfg(target_arch = "riscv32")]
 pub fn exit(code: u32) -> ! {
@@ -28,14 +36,18 @@ pub fn exit(code: u32) -> ! {
 }
 
 pub mod prelude {
+    pub use crate::dbg;
+    pub use crate::{kprint, kprintln};
+    pub use crate::{print, println};
+
     pub use crate::sys;
-    pub use crate::{dbg, print, println};
 }
 
 // Re-exports for macros
 #[doc(hidden)]
 pub mod detail {
-    pub use crate::uart::_print;
+    pub use crate::macros::_kprint;
+    pub use crate::macros::_print;
 
     pub use embedded_io;
 }

@@ -15,12 +15,13 @@ tinysys-rs = { path = "../tinysys-rs" }
 # The embedded-* ecosystem
 embedded-alloc = "0.6"
 embedded-graphics = "0.8"
+embedded-io = "0.6"
 
 micromath = "2" # Recommended if using floats
 
 [[bin]]
-name = "test-printing"
-path = "src/printing.rs"
+name = "test-print"
+path = "src/print.rs"
 test = false
 doctest = false
 bench = false

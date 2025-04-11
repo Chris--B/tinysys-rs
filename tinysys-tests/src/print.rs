@@ -10,9 +10,9 @@ extern crate riscv;
 use tinysys_rs::prelude::*;
 
 fn main() {
-    println!("Hello 👋");
-    print!("(1) Hello");
-    print!("(2) World");
+    println!("### Hello println!() tests 👋");
+    print!("(1) Hello ");
+    print!("(2) World ");
     print!("\n");
 
     let x = 1;
@@ -28,8 +28,16 @@ fn main() {
 
     // Check something that's not Copy
     let v = alloc::vec![1, 2, 3_i16];
-    dbg!(v);
+    let v = dbg!(v);
     println!();
+
+    kprintln!("### kprintln!() tests");
+    kprint!("(3) Hello ");
+    kprint!("(4) World ");
+    kprint!("\n");
+    kprintln!();
+    kprintln!("v = {v:#?}");
+    kprintln!();
 }
 
 /// The entry point loaded by the system
@@ -42,7 +50,8 @@ pub extern "C" fn _start() -> ! {
 
         #[global_allocator]
         static HEAP: embedded_alloc::LlffHeap = embedded_alloc::LlffHeap::empty();
-        const HEAP_SIZE: usize = 4 * 1024 * 1024;
+        // Purposefully tiny heap
+        const HEAP_SIZE: usize = 16;
 
         unsafe {
             #![allow(static_mut_refs)]
