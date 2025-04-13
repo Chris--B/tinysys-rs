@@ -73,30 +73,36 @@ macro_rules! println {
     }};
 }
 
-pub fn _kprint(args: core::fmt::Arguments) {
+pub fn _kprint(args: core::fmt::Arguments, newline: bool) {
     use embedded_io::Write;
 
     // Write to the system console
     let _ = write!(KernelDebugWriter, "{}", args);
+    if newline {
+        KernelDebugWriter.finish_line();
+    }
+
     // *and* uart!
     let _ = write!(UartWriter, "{}", args);
+    if newline {
+        UartWriter.finish_line();
+    }
 }
 
 #[macro_export]
 macro_rules! kprint {
     ($($arg:tt)*) => {{
-        $crate::detail::_kprint(format_args!($($arg)*));
+        $crate::detail::_kprint(format_args!($($arg)*), false);
     }};
 }
 
 #[macro_export]
 macro_rules! kprintln {
     () => {
-        $crate::kprint!("\n")
+        $crate::detail::_kprint(format_args!(""), true);
     };
 
     ($($arg:tt)*) => {{
-        $crate::kprint!($($arg)*);
-        $crate::kprint!("\n")
+        $crate::detail::_kprint(format_args!($($arg)*), true);
     }};
 }

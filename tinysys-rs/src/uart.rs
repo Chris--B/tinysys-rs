@@ -6,6 +6,12 @@ use embedded_io::{ErrorType, Write};
 
 pub struct UartWriter;
 
+impl UartWriter {
+    pub fn finish_line(&mut self) {
+        let _ = self.write_all(b"\n");
+    }
+}
+
 impl ErrorType for UartWriter {
     // UARTSendBlock() doesn't report an error, so we'll never raise an error.
     type Error = core::convert::Infallible;

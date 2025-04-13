@@ -35,9 +35,8 @@ pub fn exit(code: u32) -> ! {
     todo!("Exiting with code={code}");
 }
 
-#[cfg(feature = "panic-handler")]
+#[cfg_attr(feature = "panic-handler", panic_handler)]
 #[cfg(target_arch = "riscv32")]
-#[panic_handler]
 pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
     unsafe {
         // Default palette is VGA, see:
@@ -46,11 +45,9 @@ pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
         sys::VPUSetDefaultPalette(kgfx);
         sys::VPUConsoleSetColors(kgfx, 13 /*text*/, 0 /*bg*/);
 
-        kprintln!(
-            "!! {app} has crashed!!  oh no !",
-            app = env!("CARGO_PKG_NAME")
-        );
-        kprintln!("                                                                ");
+        let app = env!("CARGO_PKG_NAME");
+        kprintln!("!! {app} has crashed!!  oh no !");
+        kprintln!();
 
         if let Some(loc) = info.location() {
             kprintln!("{}:{}:{}: ", loc.file(), loc.line(), loc.column());
@@ -61,6 +58,7 @@ pub fn panic_handler(info: &core::panic::PanicInfo) -> ! {
         kprintln!("                                                                ");
 
         kprintln!("{}", info.message());
+        kprintln!();
 
         exit(42);
     }

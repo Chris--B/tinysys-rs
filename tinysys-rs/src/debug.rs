@@ -7,6 +7,20 @@ use embedded_io::{ErrorType, Write};
 #[derive(Debug)]
 pub struct KernelDebugWriter;
 
+impl KernelDebugWriter {
+    #[cfg(target_arch = "riscv32")]
+    pub fn finish_line(&mut self) {
+        unsafe {
+            VPUConsoleFillLine(VPUGetKernelGfxContext(), b' ');
+        }
+    }
+
+    #[cfg(not(target_arch = "riscv32"))]
+    pub fn finish_line(&mut self) {
+        let _ = self.write_all(b"\n");
+    }
+}
+
 impl ErrorType for KernelDebugWriter {
     // VPUConsolePrint() doesn't report an error, so we'll never raise an error.
     type Error = core::convert::Infallible;
